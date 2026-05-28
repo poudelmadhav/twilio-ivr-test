@@ -14,7 +14,7 @@ call = @client
        .create(
          url: 'http://demo.twilio.com/docs/voice.xml',
          to: '+10000000000',
-         from: '+15005550006'
+         from: '+10000000000'
        )
 
 puts call.sid

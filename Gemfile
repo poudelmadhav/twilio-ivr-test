@@ -7,3 +7,5 @@ source "https://rubygems.org"
 gem "puma", "~> 8.0"
 gem "twilio-ruby", "~> 7.10"
 gem "sinatra", "~> 4.2"
+
+gem "rackup", "~> 2.3"
