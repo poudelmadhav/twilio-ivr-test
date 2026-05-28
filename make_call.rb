@@ -1,4 +1,5 @@
 # Download the helper library from https://www.twilio.com/docs/ruby/install
+require 'dotenv/load'
 require 'twilio-ruby'
 
 # Find your Account SID and Auth Token at twilio.com/console
@@ -12,9 +13,9 @@ call = @client
        .v2010
         .calls
         .create(
-          url: 'https://dynamic-tarpon-valued.ngrok-free.app/',
-          to: '+10000000000',
-          from: '+10000000000'
+          url: ENV.fetch('TWILIO_VOICE_URL'),
+          to: ENV.fetch('TWILIO_TO_NUMBER'),
+          from: ENV.fetch('TWILIO_FROM_NUMBER')
         )
 
 puts call.sid

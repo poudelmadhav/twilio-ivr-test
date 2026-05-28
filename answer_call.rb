@@ -1,10 +1,11 @@
+require 'dotenv/load'
 require 'sinatra'
 require 'twilio-ruby'
 require 'net/http'
 require 'uri'
 
-PRESS_1_WEBHOOK_URL = 'https://webhook.site/d37bc9df-5c98-445d-a7c7-7ba762ee127f'
-PRESS_2_WEBHOOK_URL = 'https://webhook.site/08afa4ae-ceaf-4e1e-8b20-f7a986ad7e8d'
+PRESS_1_WEBHOOK_URL = ENV.fetch('PRESS_1_WEBHOOK_URL')
+PRESS_2_WEBHOOK_URL = ENV.fetch('PRESS_2_WEBHOOK_URL')
 
 configure :development do
   set :host_authorization, { permitted_hosts: [] }
