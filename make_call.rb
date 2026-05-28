@@ -10,11 +10,11 @@ auth_token = ENV['TWILIO_AUTH_TOKEN']
 call = @client
        .api
        .v2010
-       .calls
-       .create(
-         url: 'http://demo.twilio.com/docs/voice.xml',
-         to: '+10000000000',
-         from: '+10000000000'
-       )
+        .calls
+        .create(
+          url: 'https://dynamic-tarpon-valued.ngrok-free.app/',
+          to: '+10000000000',
+          from: '+10000000000'
+        )
 
 puts call.sid
