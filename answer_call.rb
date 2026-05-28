@@ -1,5 +1,10 @@
 require 'sinatra'
 require 'twilio-ruby'
+require 'net/http'
+require 'uri'
+
+PRESS_1_WEBHOOK_URL = 'https://webhook.site/d37bc9df-5c98-445d-a7c7-7ba762ee127f'
+PRESS_2_WEBHOOK_URL = 'https://webhook.site/08afa4ae-ceaf-4e1e-8b20-f7a986ad7e8d'
 
 configure :development do
   set :host_authorization, { permitted_hosts: [] }
@@ -8,6 +13,13 @@ end
 def self.get_or_post(url, &block)
   get(url, &block)
   post(url, &block)
+end
+
+def call_webhook(url, digit)
+  uri = URI(url)
+  Net::HTTP.post_form(uri, 'digit' => digit)
+rescue StandardError => e
+  warn "Webhook failed for digit #{digit}: #{e.message}"
 end
 
 get_or_post '/' do
@@ -28,8 +40,10 @@ get_or_post '/handle-key' do
   Twilio::TwiML::VoiceResponse.new do |response|
     case params['Digits']
     when '1'
+      call_webhook(PRESS_1_WEBHOOK_URL, '1')
       response.say(message: 'You pressed 1. Thank you. Goodbye.')
     when '2'
+      call_webhook(PRESS_2_WEBHOOK_URL, '2')
       response.say(message: 'You pressed 2. You are a real hero. See you soon. Goodbye.')
     else
       response.say(message: 'Invalid input. Please press 1 or 2.')
