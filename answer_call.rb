@@ -33,11 +33,12 @@ get_or_post '/' do
   content_type 'text/xml'
 
   Twilio::TwiML::VoiceResponse.new do |response|
-    response.gather(num_digits: 1, action: '/handle-key', input: 'dtmf speech', timeout: 10, speech_timeout: :auto, enhanced: true, speech_model: 'phone_call', language: 'en-US') do |gather|
+    response.gather(num_digits: 1, action: '/handle-key', input: 'speech dtmf', timeout: 10, speech_timeout: 5, enhanced: true, speech_model: 'googlev2_telephony', language: 'en-US') do |gather|
       gather.say(message: 'Press or say 1 for a friendly greeting. Press or say 2 for a special message.')
     end
 
-    response.say(message: 'We did not receive any input. Goodbye.')
+    response.say(message: 'We did not receive any input. Please try again.')
+    response.redirect('/')
   end.to_s
 end
 
