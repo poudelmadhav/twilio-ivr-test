@@ -29,17 +29,11 @@ rescue StandardError => e
   warn "Webhook failed for digit #{digit}: #{e.message}"
 end
 
-def twilio_voice_action(path)
-  uri = URI(ENV.fetch('TWILIO_VOICE_URL'))
-  uri.path = path
-  uri.to_s
-end
-
 get_or_post '/' do
   content_type 'text/xml'
 
   Twilio::TwiML::VoiceResponse.new do |response|
-    response.gather(num_digits: 1, action: twilio_voice_action('/handle-key'), input: 'dtmf', timeout: 5, language: 'en-US') do |gather|
+    response.gather(num_digits: 1, action: ENV.fetch('TWILIO_DTMF_ACTION_URL'), input: 'dtmf', timeout: 5, language: 'en-US') do |gather|
       gather.say(message: 'Press 1 for a friendly greeting. Press 2 for a special message.')
     end
 
