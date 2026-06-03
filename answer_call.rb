@@ -33,7 +33,7 @@ get_or_post '/' do
   content_type 'text/xml'
 
   Twilio::TwiML::VoiceResponse.new do |response|
-    response.gather(num_digits: 1, action: '/handle-key', input: 'speech dtmf', timeout: 10, speech_timeout: 5, enhanced: true, speech_model: 'googlev2_telephony', language: 'en-US') do |gather|
+    response.gather(num_digits: 1, action: '/', input: 'speech dtmf', timeout: 10, speech_timeout: 5, enhanced: true, speech_model: 'googlev2_telephony', language: 'en-US') do |gather|
       gather.say(message: 'Press or say 1 for a friendly greeting. Press or say 2 for a special message.')
     end
 
@@ -51,9 +51,11 @@ get_or_post '/handle-key' do
     when '1', 'one'
       call_webhook(PRESS_1_WEBHOOK_URL, '1')
       response.say(message: 'You pressed 1. Thank you. Goodbye.')
+      response.hangup
     when '2', 'two'
       call_webhook(PRESS_2_WEBHOOK_URL, '2')
       response.say(message: 'You pressed 2. You are a real hero. See you soon. Goodbye.')
+      response.hangup
     else
       response.say(message: 'Invalid input. Please press 1 or 2.')
       response.redirect('/')
